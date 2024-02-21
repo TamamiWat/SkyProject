@@ -7,15 +7,24 @@ public class HandTracker : MonoBehaviour
 {
 
     [SerializeField] Image[] images;
-    [SerializeField, Range(0f, 5f)] private float interval = 2.0f;
     private int currentIndex = 0;
-    private float timer = 0f;
 
     public OSCReceiverExample oscReceiver;
-    private Vector3 currentRightPos = Vector3.zero;
-    private Vector3 currentLeftPos = Vector3.zero;
-    private Vector3 lastRightPos = Vector3.zero;
-    private Vector3 lastLeftPos = Vector3.zero;
+    public Vector3 currentRightPos = Vector3.zero;
+    public Vector3 currentLeftPos = Vector3.zero;
+    public Vector3 lastRightPos = Vector3.zero;
+    public Vector3 lastLeftPos = Vector3.zero;
+    public bool isRightOK = false;
+    public bool isLeftOK = false;
+
+    public bool nearbyRight = false;
+    public bool nearbyLeft = false;
+
+    public Generater generater;
+
+    [SerializeField] float handThreshold = 10f;
+    [SerializeField] float paperThreshold = 10f;
+
 
     void Start()
     {
@@ -52,6 +61,8 @@ public class HandTracker : MonoBehaviour
     // Update is called once per frame
     private void HandleKeypointUpdated(object sender, OSCReceiverExample.KeypointEventArgs e)
     {
+        isRightOK = false;
+        isLeftOK = false;
         if (e.keypointName == "wrist(L)")
         {
             lastLeftPos = currentLeftPos;
@@ -59,8 +70,25 @@ public class HandTracker : MonoBehaviour
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(currentLeftPos);
             worldPosition.z = 10f; // z値は適宜調整
 
+            if(generater.paperNum == 0)
+            {
+                Debug.Log("nearby Left hand");
+                nearbyLeft = RangeChecker(worldPosition, generater.paperPos);
+
+                if(nearbyLeft)
+                {
+                    float userDelta = currentLeftPos.x - lastLeftPos.x;
+
+                    if(userDelta < -handThreshold)
+                    {
+                        isLeftOK = true;
+                    }
+                }
+
+            }      
+
             // ここでGameObjectをInstantiateする
-            Instantiate(oscReceiver.docArray[0], worldPosition, Quaternion.identity);
+            //Instantiate(oscReceiver.docArray[0], worldPosition, Quaternion.identity);
         }
         if (e.keypointName == "wrist(R)")
         {
@@ -69,11 +97,37 @@ public class HandTracker : MonoBehaviour
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(currentRightPos);
             worldPosition.z = 10f; // z値は適宜調整
 
+            if(generater.paperNum == 1)
+            {
+                Debug.Log("nearby Right hand");
+                nearbyRight = RangeChecker(worldPosition, generater.paperPos);
+
+                if(nearbyRight)
+                {
+                    float userDelta = currentRightPos.x - lastRightPos.x;
+
+                    if(userDelta > handThreshold)
+                    {
+                        isRightOK = true;
+                    }
+                }
+
+            }
+
             // ここでGameObjectをInstantiateする
-            Instantiate(oscReceiver.docArray[1], worldPosition, Quaternion.identity);
+            //Instantiate(oscReceiver.docArray[1], worldPosition, Quaternion.identity);
         }
         
     }
 
-    
+    private bool RangeChecker(Vector3 hand, Vector3 paper)
+    {
+        float distance = Vector3.Distance(hand, paper);
+        if(distance < paperThreshold)
+        {
+            
+            return true;
+        }
+        return false;
+    }
 }
