@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using extOSC; // extOSCライブラリを使用
+using UnityEngine.UI;
 
 public class OSCReceiverExample : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class OSCReceiverExample : MonoBehaviour
     [SerializeField] private int port = 10000; // OSCメッセージを受信するポート
     [SerializeField] private string address = "/keypoint"; // 受信したいOSCアドレス
     public GameObject[] docArray = new GameObject[2];
+    [SerializeField] Image[] images = new Image[2];
 
     private OSCReceiver _receiver; // 正しいレシーバーコンポーネントの型を使用
 

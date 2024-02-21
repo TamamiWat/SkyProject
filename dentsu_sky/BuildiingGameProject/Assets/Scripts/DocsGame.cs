@@ -1,14 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HandTracker : MonoBehaviour
 {
+
+    [SerializeField] Image[] images;
+    [SerializeField, Range(0f, 5f)] private float interval = 2.0f;
+    private int currentIndex = 0;
+    private float timer = 0f;
+
     public OSCReceiverExample oscReceiver;
     private Vector3 currentRightPos = Vector3.zero;
     private Vector3 currentLeftPos = Vector3.zero;
     private Vector3 lastRightPos = Vector3.zero;
     private Vector3 lastLeftPos = Vector3.zero;
+
+    void Start()
+    {
+        foreach (Image img in images)
+        {
+            img.gameObject.SetActive(false);
+        }
+
+        if(images.Length > 0)
+        {
+            images[currentIndex].gameObject.SetActive(true);
+        }
+        
+    }
+
+    
 
     void OnEnable()
     {
@@ -51,4 +74,6 @@ public class HandTracker : MonoBehaviour
         }
         
     }
+
+    
 }
