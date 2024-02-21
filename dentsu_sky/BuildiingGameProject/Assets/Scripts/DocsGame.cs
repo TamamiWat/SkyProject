@@ -19,26 +19,20 @@ public class HandTracker : MonoBehaviour
 
     public bool nearbyRight = false;
     public bool nearbyLeft = false;
+    private int rightCNT = 0;
+    private int leftCNT = 0;
 
     public Generater generater;
 
     [SerializeField] float handThreshold = 10f;
     [SerializeField] float paperThreshold = 10f;
-
-
-    /*void Start()
+    void Start()
     {
         foreach (Image img in images)
         {
             img.gameObject.SetActive(false);
         }
-
-        if(images.Length > 0)
-        {
-            images[currentIndex].gameObject.SetActive(true);
-        }
-        
-    }*/
+    }
 
     
 
@@ -82,6 +76,12 @@ public class HandTracker : MonoBehaviour
                     if(userDelta < -handThreshold)
                     {
                         isLeftOK = true;
+                        leftCNT++;
+                        if(leftCNT >= 3)
+                        {
+                            images[1].gameObject.SetActive(true);
+
+                        }
                     }
                 }
 
@@ -109,6 +109,12 @@ public class HandTracker : MonoBehaviour
                     if(userDelta > handThreshold)
                     {
                         isRightOK = true;
+                        rightCNT++;
+                        if(rightCNT >= 3)
+                        {
+                            images[0].gameObject.SetActive(true);
+
+                        }
                     }
                 }
 
