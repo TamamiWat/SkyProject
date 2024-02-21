@@ -12,6 +12,9 @@ model = YOLO("yolov8n-pose.pt")
 video_path = 0  # 本体に付属のカメラを指定
 capture = cv2.VideoCapture(video_path)
 
+width = 1920
+height = 1080
+
 # keypointの位置毎の名称定義
 KEYPOINTS_NAMES = [
     "nose",  # 0
@@ -36,10 +39,14 @@ KEYPOINTS_NAMES = [
 while capture.isOpened():
     success, frame = capture.read()
     if success:
+        # カメラを反転
+        frame = cv2.flip(frame, 1)
         # 推論を実行
         results = model(frame)
 
         annotatedFrame = results[0].plot()
+
+        annotatedFrame = cv2.resize(annotatedFrame, (width, height))
 
         # 検出オブジェクトの名前、バウンディングボックス座標を取得
         names = results[0].names
