@@ -362,6 +362,7 @@
 "Assets/Scripts/LowkeysDisplayer.cs"
 "Assets/Scripts/Main.cs"
 "Assets/Scripts/OSCReceiver.cs"
+"Assets/Scripts/ScoreManager.cs"
 "Assets/Scripts/Test.cs"
 "Assets/Scripts/UserManager.cs"
 -langversion:9.0
