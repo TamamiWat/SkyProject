@@ -26,7 +26,7 @@ public class HandTracker : MonoBehaviour
     [SerializeField] float paperThreshold = 10f;
 
 
-    void Start()
+    /*void Start()
     {
         foreach (Image img in images)
         {
@@ -38,7 +38,7 @@ public class HandTracker : MonoBehaviour
             images[currentIndex].gameObject.SetActive(true);
         }
         
-    }
+    }*/
 
     
 
