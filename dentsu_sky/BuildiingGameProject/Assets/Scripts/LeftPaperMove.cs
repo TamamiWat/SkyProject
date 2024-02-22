@@ -23,6 +23,7 @@ public class LeftPaperMove : MonoBehaviour
         if(docsgame.isLeftOK)
         {
             isOK = true;
+            docsgame.docCNT += 1;
         }
 
         if(isOK){

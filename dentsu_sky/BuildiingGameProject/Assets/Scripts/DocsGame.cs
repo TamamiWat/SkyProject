@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HandTracker : MonoBehaviour
 {
 
     [SerializeField] Image[] images;
     private int currentIndex = 0;
+    public TextMeshProUGUI scoreText;
 
     public OSCReceiverExample oscReceiver;
     public Vector3 currentRightPos = Vector3.zero;
@@ -21,6 +23,7 @@ public class HandTracker : MonoBehaviour
     public bool nearbyLeft = false;
     private int rightCNT = 0;
     private int leftCNT = 0;
+    public int docCNT = 0;
 
     public Generater generater;
 
@@ -32,6 +35,9 @@ public class HandTracker : MonoBehaviour
         {
             img.gameObject.SetActive(false);
         }
+
+        UpdateScoreDisplay(); 
+        
     }
 
     
@@ -120,6 +126,8 @@ public class HandTracker : MonoBehaviour
 
             }
 
+            UpdateScoreDisplay();
+
             // ここでGameObjectをInstantiateする
             //Instantiate(oscReceiver.docArray[1], worldPosition, Quaternion.identity);
         }
@@ -135,5 +143,18 @@ public class HandTracker : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    /*public int Document
+    {
+        set
+        {
+            docCNT = value;
+        }
+    }*/
+
+    void UpdateScoreDisplay()
+    {
+        scoreText.text = docCNT.ToString();
     }
 }

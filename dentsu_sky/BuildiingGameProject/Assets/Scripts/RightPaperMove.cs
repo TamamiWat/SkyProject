@@ -25,6 +25,7 @@ public class RightPaperMove : MonoBehaviour
         if(docsgame.isRightOK)
         {
             isOK = true;
+            docsgame.docCNT += 1;
         }
 
         if(isOK){
